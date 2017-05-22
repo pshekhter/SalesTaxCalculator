@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sales Tax Calculator</string>
+    <string name="prmptPrice">Enter the Price:</string>
+    <string name="prmptRate">Enter the Rate:</string>
+    <string name="hntPrice">Enter the Price</string>
+    <string name="hntRate">Enter the Rate</string>
+    <string name="clckCalc">Calculate Sales Tax</string>
+    <string name="strResult">Total:</string>
+    <string name="error_enterPrice">Enter a price!</string>
+    <string name="error_enterRate">Enter the sales tax rate!</string>
+</resources>

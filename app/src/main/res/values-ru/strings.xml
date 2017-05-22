@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Калькулатор налога на продажу</string>
+    <string name="clckCalc">Вычисление налога на продажу</string>
+    <string name="hntPrice">Ввод</string>
+    <string name="hntRate">%</string>
+    <string name="prmptRate">Процент налога:</string>
+    <string name="prmptPrice">Цена:</string>
+    <string name="strResult">Сумма:</string>
+    <string name="error_enterPrice">Введити цыну!</string>
+    <string name="error_enterRate">Введитти процент налога!</string>
+</resources>
