@@ -6,18 +6,13 @@
 package dorapps.com.salestaxcalculator;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.OnTextChanged;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -25,15 +20,20 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.OnTextChanged;
+
 public class MainActivity extends AppCompatActivity {
 
+    private static Context mContext;
     BigDecimal price = new BigDecimal("0.0");
     BigDecimal rate = new BigDecimal("0.0");
     BigDecimal result = new BigDecimal("0.0");
     BigDecimal total = new BigDecimal("0.0");
-
     String strResult;
-
+    String strTax;
     @BindView(R.id.etPrice)
     EditText etPrice;
     @BindView(R.id.etRate)
@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnCalculate;
     @BindView(R.id.tvResult)
     TextView tvResult;
-
-    private static Context mContext;
+    @BindView(R.id.tvTax)
+    TextView tvTax;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,50 @@ public class MainActivity extends AppCompatActivity {
         mContext = getApplicationContext();
 
         strResult = mContext.getString(R.string.strResult);
+        strTax = mContext.getString(R.string.strTax);
+
+        String initialValue = "";
+
+        if (savedInstanceState != null) {
+            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+            String pattern = "####.##";
+            DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+            decimalFormat.setParseBigDecimal(true);
+
+            initialValue = savedInstanceState.getString("price");
+
+            try {
+                price = (BigDecimal) decimalFormat.parse(initialValue);
+            } catch (ParseException e) {
+                Log.d("Error", "Invalid price.");
+                Log.d("Error", "Current data: " + e.toString());
+            }
+
+            initialValue = savedInstanceState.getString("rate");
+            try {
+                rate = (BigDecimal) decimalFormat.parse(initialValue);
+            } catch (ParseException e) {
+                Log.d("Error", "Invalid rate.");
+                Log.d("Error", "Current data: " + e.toString());
+            }
+
+            initialValue = savedInstanceState.getString("result");
+            try {
+                result = (BigDecimal) decimalFormat.parse(initialValue);
+            } catch (ParseException e) {
+                Log.d("Error", "Invalid result.");
+                Log.d("Error", "Current data: " + e.toString());
+            }
+
+            initialValue = savedInstanceState.getString("total");
+            try {
+                total = (BigDecimal) decimalFormat.parse(initialValue);
+            } catch (ParseException e) {
+                Log.d("Error", "Invalid total.");
+                Log.d("Error", "Current data: " + e.toString());
+            }
+        }
+
         setGUI();
     }
 
@@ -75,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Error", "Invalid price.");
             Log.d("Error", "Current data: " + e.toString());
         }
+
     }
 
     @OnTextChanged(R.id.etRate)
@@ -153,10 +198,29 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Error", "Current data: " + e.toString());
         }
 
-        total = total.setScale(2, RoundingMode.HALF_EVEN);
+        try {
+            result = (BigDecimal) decimalFormat.parse(result.toString());
+
+        } catch (ParseException e) {
+            Log.d("Error", "Invalid total.");
+            Log.d("Error", "Current data: " + e.toString());
+        }
+
+        total = total.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+        result = result.setScale(2, RoundingMode.HALF_EVEN);
 
         tvResult.setText(strResult + " $" + total.toString());
+        tvTax.setText(strTax + " $" + result.toString());
         result = new BigDecimal("0.00");
         total = new BigDecimal("0.00");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString("price", price.toString());
+        outState.putString("rate", rate.toString());
+        outState.putString("result", result.toString());
+        outState.putString("total", total.toString());
+        super.onSaveInstanceState(outState);
     }
 }

@@ -9,4 +9,5 @@
     <string name="strResult">Total:</string>
     <string name="error_enterPrice">Enter a price!</string>
     <string name="error_enterRate">Enter the sales tax rate!</string>
+    <string name="strTax">Tax:</string>
 </resources>

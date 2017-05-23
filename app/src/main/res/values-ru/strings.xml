@@ -9,4 +9,5 @@
     <string name="strResult">Сумма:</string>
     <string name="error_enterPrice">Введити цыну!</string>
     <string name="error_enterRate">Введитти процент налога!</string>
+    <string name="strTax">Налог:</string>
 </resources>
